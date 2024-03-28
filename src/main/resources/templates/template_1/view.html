@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>View</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link th:href="@{https://fonts.googleapis.com/css?family=Lato:400,300,700}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" th:href="@{/template_1_static/css/style.css}">
+    </head>
+    <body>
+
+        <div class="container" th:if="${userProfile} != null">
+
+            <div class="details">
+                <div class="section" th:if="${principal} != null">
+                    <a th:href="@{/profile}"><div class="section__title">Edit</div></a>
+                </div>
+            </div>
+
+            <div class="header">
+                <div class="full-name" th:if="${userProfile.userProfileSummary.firstName} != '' AND ${userProfile.userProfileSummary.lastName} != ''">
+                    <span class="first-name" th:text="${userProfile.userProfileSummary.firstName}">firstName</span>
+                    <span class="last-name" th:text="${userProfile.userProfileSummary.lastName}">lastName</span>
+                </div>
+
+                <div class="contact-info" th:if="${userProfile.userProfileContact.email} != '' AND ${userProfile.userProfileContact.phone} != ''">
+                    <span class="email">Email: </span>
+                    <span class="email-val" th:text="${userProfile.userProfileContact.email}">email</span>
+
+                    <span class="separator"></span>
+
+                    <span class="phone">Phone: </span>
+                    <span class="phone-val" th:text="${userProfile.userProfileContact.phone}">phone</span>
+                </div>
+
+                <div class="about" th:if="${userProfile.userProfileSummary.title} != '' AND ${userProfile.userProfileSummary.description} != ''">
+                    <span class="position" th:text="${userProfile.userProfileSummary.title}">title</span>
+                    <span class="desc" th:text="${userProfile.userProfileSummary.description}">
+                        description
+                    </span>
+                </div>
+            </div>
+
+            <div class="details">
+                <div class="section" th:if="${#lists.size(userProfile.userProfileExperiences)} > 0">
+                    <div class="section__title">Experience</div>
+                    <div class="section__list">
+
+                        <div class="section__list-item" th:each="userProfileExperience : ${userProfile.userProfileExperiences}">
+                            <div class="left">
+                                <div class="name" th:text="${userProfileExperience.company}">company</div>
+                                <div class="addr" th:text="${userProfileExperience.address}">address</div>
+                                <div class="duration" th:text="${userProfileExperience.formattedStartDate} + ' - ' + ${userProfileExperience.formattedEndDate}">startDate - endDate</div>
+                            </div>
+
+                            <div class="right">
+                                <div class="name" th:text="${userProfileExperience.position}">position</div>
+                                <div class="desc" th:text="${userProfileExperience.description}">description</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="section" th:if="${#lists.size(userProfile.userProfileEducations)} > 0">
+                    <div class="section__title">Education</div>
+                    <div class="section__list">
+
+                        <div class="section__list-item" th:each="userProfileEducation : ${userProfile.userProfileEducations}">
+                            <div class="left">
+                                <div class="name" th:text="${userProfileEducation.school}">company</div>
+                                <div class="addr" th:text="${userProfileEducation.address}">address</div>
+                                <div class="duration" th:text="${userProfileEducation.formattedStartDate} + ' - ' + ${userProfileEducation.formattedEndDate}">startDate - endDate</div>
+                            </div>
+
+                            <div class="right">
+                                <div class="name" th:text="${userProfileEducation.position}">position</div>
+                                <div class="desc" th:text="${userProfileEducation.description}">description</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="section" th:if="${#lists.size(userProfile.userProfileSkills)} > 0">
+                    <div class="section__title">Skills</div>
+                    <div class="skills">
+
+                        <div class="skills__item" th:each="userProfileSkill : ${userProfile.userProfileSkills}">
+                            <div class="left">
+                                <div class="name" th:text="${userProfileSkill.skill}">userProfileSkill</div>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'Junior'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox"/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox"/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox"/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox"/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox"/> <label for="skill-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'Intermediate'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox" checked/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox"/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox"/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox"/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox"/> <label for="skill-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'Senior'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox" checked/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox" checked/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox"/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox"/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox"/> <label for="skill-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'Master'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox" checked/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox" checked/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox" checked/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox"/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox"/> <label for="skill-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'Monster'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox" checked/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox" checked/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox" checked/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox" checked/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox"/> <label for="skill-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileSkill.level} == 'GOD TIER'">
+                                <input  id="skill-check-1" type="checkbox" checked/><label for="skill-check-1"></label> <input id="skill-check-2" type="checkbox" checked/><label for="skill-check-2"></label> <input id="skill-check-3" type="checkbox" checked/><label for="skill-check-3"></label> <input id="skill-check-4" type="checkbox" checked/><label for="skill-check-4"></label> <input id="skill-check-5" type="checkbox" checked/> <label for="skill-check-5"></label> <input id="skill-check-6" type="checkbox" checked/> <label for="skill-check-6"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="section" th:if="${#lists.size(userProfile.userProfileLanguages)} > 0">
+                    <div class="section__title">Languages</div>
+                    <div class="skills">
+
+                        <div class="skills__item" th:each="userProfileLanguage : ${userProfile.userProfileLanguages}">
+                            <div class="left">
+                                <div class="name" th:text="${userProfileLanguage.language}">userProfileLanguage</div>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'A1'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox"/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox"/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox"/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox"/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox"/> <label for="language-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'A2'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox" checked/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox"/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox"/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox"/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox"/> <label for="language-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'B1'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox" checked/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox" checked/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox"/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox"/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox"/> <label for="language-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'B2'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox" checked/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox" checked/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox" checked/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox"/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox"/> <label for="language-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'C1'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox" checked/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox" checked/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox" checked/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox" checked/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox"/> <label for="language-check-6"></label>
+                            </div>
+
+                            <div class="right" th:if="${userProfileLanguage.level} == 'C2'">
+                                <input  id="language-check-1" type="checkbox" checked/><label for="language-check-1"></label> <input id="language-check-2" type="checkbox" checked/><label for="language-check-2"></label> <input id="language-check-3" type="checkbox" checked/><label for="language-check-3"></label> <input id="language-check-4" type="checkbox" checked/><label for="language-check-4"></label> <input id="language-check-5" type="checkbox" checked/> <label for="language-check-5"></label> <input id="language-check-6" type="checkbox" checked/> <label for="language-check-6"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!--
+                <div class="section">
+                    <div class="section__title">Projects</div>
+                    <div class="section__list">
+                        <div class="section__list-item">
+                            <div class="name">DSP</div>
+                            <div class="text">I am a front-end developer with more than 3 years of experience writing html, css, and js. I'm motivated, result-focused and seeking a successful team-oriented company with opportunity to grow.</div>
+                        </div>
+
+                        <div class="section__list-item">
+                            <div class="name">DSP</div>
+                            <div class="text">
+                                I am a front-end developer with more than 3 years of experience writing html, css, and js. I'm motivated, result-focused and seeking a successful team-oriented company with opportunity to grow.
+                                <a th:href="@{/login}">link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+                <!--
+                <div class="section">
+                    <div class="section__title">Interests</div>
+                    <div class="section__list">
+                        <div class="section__list-item">
+                            Gaming, Anime
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+
+    </body>
+</html>

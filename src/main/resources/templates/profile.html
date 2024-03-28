@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+        <title>Profile</title>
+
+        <!-- General CSS Files -->
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/bootstrap/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/fontawesome/css/all.min.css}">
+
+        <!-- CSS Libraries -->
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/datatables/datatables.min.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/bootstrap-daterangepicker/daterangepicker.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/modules/jquery-selectric/selectric.css}">
+
+        <!-- Template CSS -->
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/css/style.css}">
+        <link rel="stylesheet" th:href="@{/stisla/dist/assets/css/components.css}">
+
+        <!-- Start GA -->
+        <script async th:src="@{https://www.googletagmanager.com/gtag/js?id=UA-94034622-3}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-94034622-3');
+        </script>
+        <!-- /END GA -->
+    </head>
+
+    <body class="sidebar-mini">
+        <div id="app">
+            <div class="main-wrapper main-wrapper-1">
+                <div class="navbar-bg"></div>
+                <nav class="navbar navbar-expand-lg main-navbar">
+                    <form class="form-inline mr-auto">
+                        <ul class="navbar-nav mr-3">
+                            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+                        </ul>
+                    </form>
+
+                    <ul class="navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                                <div th:text="${userProfile.user.username}" class="d-sm-none d-lg-inline-block">username</div>
+                            </a>
+
+                            <form th:action="@{/logout}" method="POST">
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <div class="dropdown-divider"></div>
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt"></i> Logout
+                                    </button>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="main-sidebar sidebar-style-2">
+                    <aside id="sidebar-wrapper">
+                        <div class="sidebar-brand">
+                            <a th:href="@{/home}">Resume Builder</a>
+                        </div>
+                        <div class="sidebar-brand sidebar-brand-sm">
+                            <a th:href="@{/home}">RB</a>
+                        </div>
+                        <ul class="sidebar-menu">
+                            <li class="active">
+                                <a th:href="@{/profile}" class="nav-link"><i class="fas fa-edit"></i> <span>Profile</span></a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/view/' + ${userProfile.user.username}}" class="nav-link"><i class="fas fa-eye"></i> <span>View</span></a>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <section class="section">
+                        <div class="section-header">
+                            <h1>Profile</h1>
+                        </div>
+
+                        <div class="section-body">
+
+                            <div class="row">
+                                <div class="col-12">
+
+                                    <div class="card">
+
+                                        <div class="card-header">
+                                            <h4>Edit Profile</h4>
+                                        </div>
+
+                                        <div class="card-body">
+
+                                            <form th:object="${userProfile}" th:action="@{/save}" method="POST">
+
+                                                <input th:field="*{userId}" type="hidden" class="form-control">
+
+                                                <div class="form-divider">Edit Template</div>
+
+                                                <div class="row">
+                                                    <div>
+                                                        <label></label>
+                                                        <input th:field="*{userProfileTemplate.userId}" type="hidden" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-12">
+                                                        <label>Template:</label>
+                                                        <select th:field="*{userProfileTemplate.template}" class="form-control selectric">
+                                                            <option th:value="*{userProfileTemplate.template}">Template 1</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Summary</div>
+
+                                                <div class="row">
+                                                    <div>
+                                                        <label></label>
+                                                        <input th:field="*{userProfileSummary.userId}" type="hidden" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label>First name:</label>
+                                                        <input th:field="*{userProfileSummary.firstName}" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label>Last name:</label>
+                                                        <input th:field="*{userProfileSummary.lastName}" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-4">
+                                                        <label>Title:</label>
+                                                        <input th:field="*{userProfileSummary.title}" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-12">
+                                                        <label>Description:</label>
+                                                        <textarea th:field="*{userProfileSummary.description}" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Contact</div>
+
+                                                <div class="row">
+                                                    <div>
+                                                        <label></label>
+                                                        <input th:field="*{userProfileContact.userId}" type="hidden" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <label>Email:</label>
+                                                        <input th:field="*{userProfileContact.email}" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-6">
+                                                        <label>Phone:</label>
+                                                        <input th:field="*{userProfileContact.phone}" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Experiences</div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-12">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Company</th>
+                                                                    <th>Address</th>
+                                                                    <th>Start Date</th>
+                                                                    <th>End Date</th>
+                                                                    <th>Position</th>
+                                                                    <th>Description</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!--
+                                                                Here we are getting the list of userProfileExperience objects (userProfileExperiences) from userProfile
+                                                                This means that userProfileExperience would be equivalent to this: "userProfile.getUserProfileExperience();" and this getter doesn't exist within userProfile
+                                                                So one way to solve this is by iterating over userProfileExperiences with an index instead of a getter that doesn't exist
+                                                                -->
+                                                                <tr th:each="userProfileExperience, stat : *{userProfileExperiences}"> <!-- 'stat' is a loop status variable from Thymeleaf that provides information about the iteration, such as the current index -->
+                                                                    <td hidden> <input th:field="*{userProfileExperiences[__${stat.index}__].experienceId}" type="hidden" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileExperiences[__${stat.index}__].company}" type="text" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileExperiences[__${stat.index}__].address}" type="text" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileExperiences[__${stat.index}__].startDate}" type="text" class="form-control datepicker"> </td>
+                                                                    <td> <input th:field="*{userProfileExperiences[__${stat.index}__].endDate}" type="text" class="form-control datepicker"> </td>
+                                                                    <td> <input th:field="*{userProfileExperiences[__${stat.index}__].position}" type="text" class="form-control"> </td>
+                                                                    <td> <textarea th:field="*{userProfileExperiences[__${stat.index}__].description}" class="form-control"></textarea> </td>
+                                                                    <td th:if="*{userProfileExperiences[__${stat.index}__].experienceId} > 0"> <a th:href="@{'/remove/experience/' + *{userProfileExperiences[__${stat.index}__].experienceId}}" class="btn btn-icon btn-danger" data-toggle="tooltip" title="Remove"><i class="fas fa-trash"></i></a> </td>
+                                                                </tr>
+                                                                <!--
+                                                                Thymeleaf may automatically apply some formatting for Java 8 Date classes (like LocalDate) when rendering them in the 'th:field' attribute
+                                                                This format might not always match your preferred format
+                                                                So in order to solve this, set a default format for your date properties using the '@DateTimeFormat' annotation
+                                                                For example:
+
+                                                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                                                    private LocalDate startDate;
+                                                                -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Educations</div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-12">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>School</th>
+                                                                    <th>Address</th>
+                                                                    <th>Start Date</th>
+                                                                    <th>End Date</th>
+                                                                    <th>Position</th>
+                                                                    <th>Description</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!--
+                                                                Here we are getting the list of userProfileEducation objects (userProfileEducations) from userProfile
+                                                                This means that userProfileEducation would be equivalent to this: "userProfile.getUserProfileEducation();" and this getter doesn't exist within userProfile
+                                                                So one way to solve this is by iterating over userProfileEducations with an index instead of a getter that doesn't exist
+                                                                -->
+                                                                <tr th:each="userProfileEducation, stat : *{userProfileEducations}"> <!-- 'stat' is a loop status variable from Thymeleaf that provides information about the iteration, such as the current index -->
+                                                                    <td hidden> <input th:field="*{userProfileEducations[__${stat.index}__].educationId}" type="hidden" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileEducations[__${stat.index}__].school}" type="text" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileEducations[__${stat.index}__].address}" type="text" class="form-control"> </td>
+                                                                    <td> <input th:field="*{userProfileEducations[__${stat.index}__].startDate}" type="text" class="form-control datepicker"> </td>
+                                                                    <td> <input th:field="*{userProfileEducations[__${stat.index}__].endDate}" type="text" class="form-control datepicker"> </td>
+                                                                    <td> <input th:field="*{userProfileEducations[__${stat.index}__].position}" type="text" class="form-control"> </td>
+                                                                    <td> <textarea th:field="*{userProfileEducations[__${stat.index}__].description}" class="form-control"></textarea> </td>
+                                                                    <td th:if="*{userProfileEducations[__${stat.index}__].educationId} > 0"> <a th:href="@{'/remove/education/' + *{userProfileEducations[__${stat.index}__].educationId}}" class="btn btn-icon btn-danger" data-toggle="tooltip" title="Remove"><i class="fas fa-trash"></i></a> </td>
+                                                                </tr>
+                                                                <!--
+                                                                Thymeleaf may automatically apply some formatting for Java 8 Date classes (like LocalDate) when rendering them in the 'th:field' attribute
+                                                                This format might not always match your preferred format
+                                                                So in order to solve this, set a default format for your date properties using the '@DateTimeFormat' annotation
+                                                                For example:
+
+                                                                    @DateTimeFormat(pattern = "yyyy-MM-dd")
+                                                                    private LocalDate startDate;
+                                                                -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Skills</div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-12">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Skill</th>
+                                                                    <th>Level</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!--
+                                                                Here we are getting the list of userProfileSkill objects (userProfileSkills) from userProfile
+                                                                This means that userProfileSkill would be equivalent to this: "userProfile.getUserProfileSkill();" and this getter doesn't exist within userProfile
+                                                                So one way to solve this is by iterating over userProfileSkills with an index instead of a getter that doesn't exist
+                                                                -->
+                                                                <tr th:each="userProfileSkill, stat : *{userProfileSkills}"> <!-- 'stat' is a loop status variable from Thymeleaf that provides information about the iteration, such as the current index -->
+                                                                    <td hidden>
+                                                                        <input th:field="*{userProfileSkills[__${stat.index}__].skillId}" type="hidden" class="form-control">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input th:field="*{userProfileSkills[__${stat.index}__].skill}" type="text" class="form-control">
+                                                                    </td>
+                                                                    <td>
+                                                                        <select th:field="*{userProfileSkills[__${stat.index}__].level}" class="form-control selectric">
+                                                                            <option value="Junior">Junior</option>
+                                                                            <option value="Intermediate">Intermediate</option>
+                                                                            <option value="Senior">Senior</option>
+                                                                            <option value="Master">Master</option>
+                                                                            <option value="Monster">Monster</option>
+                                                                            <option value="GOD TIER">GOD TIER</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td th:if="*{userProfileSkills[__${stat.index}__].skillId} > 0">
+                                                                        <a th:href="@{'/remove/skill/' + *{userProfileSkills[__${stat.index}__].skillId}}" class="btn btn-icon btn-danger" data-toggle="tooltip" title="Remove"><i class="fas fa-trash"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider">Edit Languages</div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-12">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Language</th>
+                                                                    <th>Level</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <!--
+                                                                Here we are getting the list of userProfileLanguage objects (userProfileLanguages) from userProfile
+                                                                This means that userProfileLanguage would be equivalent to this: "userProfile.getUserProfileLanguage();" and this getter doesn't exist within userProfile
+                                                                So one way to solve this is by iterating over userProfileLanguages with an index instead of a getter that doesn't exist
+                                                                -->
+                                                                <tr th:each="userProfileLanguage, stat : *{userProfileLanguages}"> <!-- 'stat' is a loop status variable from Thymeleaf that provides information about the iteration, such as the current index -->
+                                                                    <td hidden>
+                                                                        <input th:field="*{userProfileLanguages[__${stat.index}__].languageId}" type="hidden" class="form-control">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input th:field="*{userProfileLanguages[__${stat.index}__].language}" type="text" class="form-control">
+                                                                    </td>
+                                                                    <td>
+                                                                        <select th:field="*{userProfileLanguages[__${stat.index}__].level}" class="form-control selectric">
+                                                                            <option value="A1">A1</option>
+                                                                            <option value="A2">A2</option>
+                                                                            <option value="B1">B1</option>
+                                                                            <option value="B2">B2</option>
+                                                                            <option value="C1">C1</option>
+                                                                            <option value="C2">C2</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td th:if="*{userProfileLanguages[__${stat.index}__].languageId} > 0">
+                                                                        <a th:href="@{'/remove/language/' + *{userProfileLanguages[__${stat.index}__].languageId}}" class="btn btn-icon btn-danger" data-toggle="tooltip" title="Remove"><i class="fas fa-trash"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-divider"></div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-12">
+                                                        <input type="submit" class="form-control btn btn-lg btn-primary" value="Save Changes">
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                    </section>
+
+                </div>
+                <footer class="main-footer">
+                    <div class="footer-left">
+
+                    </div>
+                    <div class="footer-right">
+
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- General JS Scripts -->
+        <script th:src="@{/stisla/dist/assets/modules/jquery.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/popper.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/tooltip.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/bootstrap/js/bootstrap.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/nicescroll/jquery.nicescroll.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/moment.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/js/stisla.js}"></script>
+
+        <!-- JS Libraies -->
+        <script th:src="@{/stisla/dist/assets/modules/datatables/datatables.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/bootstrap-daterangepicker/daterangepicker.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/jquery-pwstrength/jquery.pwstrength.min.js}"></script>
+        <script th:src="@{/stisla/dist/assets/modules/jquery-selectric/jquery.selectric.min.js}"></script>
+
+        <!-- Page Specific JS File -->
+        <script th:src="@{/stisla/dist/assets/js/page/modules-datatables.js}"></script>
+        <script th:src="@{/stisla/dist/assets/js/page/forms-advanced-forms.js}"></script>
+
+        <!-- Template JS File -->
+        <script th:src="@{/stisla/dist/assets/js/scripts.js}"></script>
+        <script th:src="@{/stisla/dist/assets/js/custom.js}"></script>
+    </body>
+</html>
